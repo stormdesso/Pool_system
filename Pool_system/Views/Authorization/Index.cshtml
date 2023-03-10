@@ -1,0 +1,18 @@
+﻿@model AuthorizationModel // Модель с которой взаимодействует html
+
+<h2>Вход на сайт</h2>
+
+<form method="post" asp-controller="Authorization" asp-action="CheckData"> <!-- Метод передачи данных, контроллер для обработки данных, метод для обработки данных -->
+
+    <label asp-for="Login"></label> <!-- Название поля -->
+    <input asp-for="Login" /> <!-- Поле для ввода данных -->
+    <span asp-validation-for="Login"></span> <!-- Поле для вывода ошибок -->
+
+    <label asp-for="Password"></label> <!-- Название поля -->
+    <input asp-for="Password" /> <!-- Поле для ввода данных -->
+    <span asp-validation-for="Password"></span> <!-- Поле для вывода ошибок -->
+
+    <input type="submit" value="Войти"/>
+</form> 
+
+
