@@ -26,7 +26,7 @@ namespace Pool_system.Controllers
                     return View("dataCheck");//авторизован успешно
                 }
                 else
-                    return View("Index");//пользователь не найден. Хорошо!!!!
+                    return View("Index");//пользователь не найден. Хорошо!!!!ТЕст успешный
             }
             catch (Exception ex)
             {
