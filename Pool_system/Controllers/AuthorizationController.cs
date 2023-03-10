@@ -13,8 +13,6 @@ namespace Pool_system.Controllers
             return View();
         }
 
-        
-
         [HttpPost]
         public IActionResult CheckData(AuthorizationModel data) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
