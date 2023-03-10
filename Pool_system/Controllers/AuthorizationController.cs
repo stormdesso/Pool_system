@@ -13,7 +13,8 @@ namespace Pool_system.Controllers
             return View();
         }
 
-        [HttpPost]        
+        [HttpPost]
+        [Route("authorization")] //добавляет к пути authorization         
         public IActionResult CheckData(AuthorizationModel data) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
             try
@@ -32,17 +33,22 @@ namespace Pool_system.Controllers
             }
         }
 
-        public IActionResult Registration(AuthorizationModel data) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
+        [HttpPost]
+        [Route("registration")] //добавляет к пути registration  
+        public IActionResult Registration() //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
             try
             {
+                AuthorizationModel data = new AuthorizationModel();
+                data.Login = "ADMIN";
+                data.Password = "ADMIN";
                 UserContext context = (UserContext)HttpContext.RequestServices.GetService(typeof(UserContext));//получаем подключение к базе
                 if (context.TryRegistrationUser(data.Login, data.Password))
                 {
-                    return View("зарегался");//авторизован успешно
+                    return View("зарегался");//зарегистрирован успешно
                 }
                 else
-                    return View("не зарегался");//пользователь не найден.
+                    return View("не зарегался");//не зарегистрирован
 
             }
             catch (Exception ex)
