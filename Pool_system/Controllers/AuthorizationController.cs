@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pool_system.Models;
 using System.Net;
+using MySql.Data.MySqlClient;
 
 namespace Pool_system.Controllers
 {
@@ -12,21 +13,24 @@ namespace Pool_system.Controllers
             return View();
         }
 
-        public IActionResult dataCheck() //При запуске этого контроллера, выводит html с именем index из папки Authorization (Из-за схожести названия контроллера и папки)
-        {
-            return View();
-        }
+        
 
         [HttpPost]
         public IActionResult CheckData(AuthorizationModel data) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
-            if (data.Login == "admin" && data.Password == "admin")
+            try
             {
-                return View("dataCheck");
+                UserContext context = (UserContext)HttpContext.RequestServices.GetService(typeof(UserContext));
+                if (context.TryLogInUser(data.Login, data.Password))
+                {
+                    return View("dataCheck");//авторизован успешно
+                }
+                else
+                    return View("Index");//пользователь не найден
             }
-            else
+            catch (Exception ex)
             {
-                return View("Index");
+                return Problem("Internal error");//не смогли подключитсья к базе и т.п
             }
         }
     }
