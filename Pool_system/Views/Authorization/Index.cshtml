@@ -2,6 +2,9 @@
 
 <h2>Вход на сайт</h2>
 
+<a asp-controller="Authorization" asp-action="RegistrationForm">Зарегистрироваться</a>
+<a asp-controller="Authorization" asp-action="RestorePasswordForm">Восстановить пароль</a>
+
 <form method="post" asp-controller="Authorization" asp-action="CheckData"> <!-- Метод передачи данных, контроллер для обработки данных, метод для обработки данных -->
 
     <label asp-for="Login"></label> <!-- Название поля -->
@@ -13,6 +16,7 @@
     <span asp-validation-for="Password"></span> <!-- Поле для вывода ошибок -->
 
     <input type="submit" value="Войти"/>
+    <span>@ViewData["Message"]</span> <!-- Поле для вывода ошибок -->
 </form> 
 
 
