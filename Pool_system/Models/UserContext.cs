@@ -48,6 +48,37 @@ namespace Pool_system.Models
 
             return false;
         }
+
+        public bool TryRegistrationUser(string login, string password)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                MySqlParameter param = new MySqlParameter("@login", login);
+                MySqlParameter passswordParam = new MySqlParameter("@password", password);
+                MySqlCommand cmd = new MySqlCommand(
+                    "SELECT count(*) FROM users\r\n\t" +
+                    "WHERE (users.Login = @login);"
+                , conn);
+
+                cmd.Parameters.Add(param);
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {                    
+                    while (reader.Read())
+                    {
+                        if (login == reader.GetString("Login"))
+                        {
+                            conn.Close();
+                            return false;
+                        }
+                    }
+                }
+
+            }
+
+            return false;
+        }
     }
 }
 

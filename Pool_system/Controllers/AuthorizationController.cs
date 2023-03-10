@@ -13,7 +13,7 @@ namespace Pool_system.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost]        
         public IActionResult CheckData(AuthorizationModel data) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
             try
@@ -31,5 +31,27 @@ namespace Pool_system.Controllers
                 return Problem("Internal error");//не смогли подключитсья к базе и т.п
             }
         }
+
+        public IActionResult Registration(AuthorizationModel data) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
+        {
+            try
+            {
+                UserContext context = (UserContext)HttpContext.RequestServices.GetService(typeof(UserContext));//получаем подключение к базе
+                if (context.TryRegistrationUser(data.Login, data.Password))
+                {
+                    return View("зарегался");//авторизован успешно
+                }
+                else
+                    return View("не зарегался");//пользователь не найден.
+
+            }
+            catch (Exception ex)
+            {
+                return Problem("Internal error");//не смогли подключитсья к базе и т.п
+            }
+        }
+
+
+
     }
 }
