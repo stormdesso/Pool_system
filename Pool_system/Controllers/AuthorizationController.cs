@@ -34,7 +34,7 @@ namespace Pool_system.Controllers
                 UserContext context = (UserContext)HttpContext.RequestServices.GetService(typeof(UserContext));
                 if (context.TryLogInUser(data.Login, data.Password))
                 {
-                    return View("dataCheck");//авторизован успешно
+                    return View("PoolList");//авторизован успешно
                 }
                 else
                     @ViewData["Message"] = "Пользователь не найден";
