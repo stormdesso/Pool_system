@@ -1,0 +1,11 @@
+﻿label
+{
+    display: block;
+}
+
+span
+{
+    display: block;
+    color: red;
+    font-size: small;
+}
