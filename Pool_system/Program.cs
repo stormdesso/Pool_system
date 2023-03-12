@@ -1,9 +1,43 @@
-using Pool_system.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Pool_system.Models.Classes;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSection"));
+
+var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
+var issuer = builder.Configuration.GetSection("JWTSettings:Issuer").Value;
+var audience = builder.Configuration.GetSection("JWTSettings:Audience").Value;
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}
+).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = issuer,
+        ValidateAudience = true,
+        ValidAudience = audience,
+        ValidateLifetime = true,
+        IssuerSigningKey= signingKey,
+        ValidateIssuerSigningKey = true        
+    };
+}
+);
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.Add(new ServiceDescriptor(typeof(UserContext), new UserContext(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
 builder.Services.AddDistributedMemoryCache();// добавляем IDistributedMemoryCache
@@ -34,6 +68,7 @@ app.UseSession();   // добавляем middleware для работы с сессиями
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
