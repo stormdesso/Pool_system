@@ -5,36 +5,51 @@ namespace Pool_system.Models
 {
     public class RegistrationModel
     {
+        //Логин
         [Display(Name = "Логин")]
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        public string Login { get; set; } //Логин
+        [Required(ErrorMessage = "Поле обязательно для заполнения")] //Делает поле обязательным для заполнения с выводом сообщения
+        public string Login { get; set; }
 
+        //Пароль
         [Display(Name = "Пароль")]
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        public string Password { get; set; } //Пароль
+        [MinLength(8, ErrorMessage = "Длинна пароля должна быть не меньше 8 символов")]//Ограничение по длине, на 8 символов, с выводом сообщения
+        public string Password { get; set; }
 
+        //Подтверждение пароля
+        [Display(Name = "Подтвердите пароль")]
+        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Compare("Password", ErrorMessage = "Пароли не совпадают")] //Проверяет пароли на совпадение
+        public string ConfirmPassword { get; set; }
+
+        //ФИО
         [Display(Name = "ФИО")]
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        public string Name { get; set; } //ФИО
+        public string Name { get; set; }
 
+        //Электронная почта
         [Display(Name = "Электронная почта")]
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        public string Email { get; set; } //Электронная почта
+        public string Email { get; set; }
 
+        //Населенный пункт
         [Display(Name = "Населенный пункт")]
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        public string Locality { get; set; } //Населенный пункт
+        public string Locality { get; set; }
 
+        //Название улицы
         [Display(Name = "Название улицы")]
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        public string StreetName { get; set; } //Название улицы
+        public string StreetName { get; set; }
 
+        //Номер дома
         [Display(Name = "Номер дома")]
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        public string HouseNumber { get; set; } //Номер дома
+        public string HouseNumber { get; set; }
 
+        //Номер квартиры
         [Display(Name = "Номер квартиры")]
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        public string ApartmentNumber { get; set; } //Номер квартиры
+        public string ApartmentNumber { get; set; }
     }
 }
