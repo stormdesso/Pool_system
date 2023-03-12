@@ -1,42 +1,53 @@
 ﻿@model RegistrationModel
-<h2>Регистрация</h2>
 
-<form method="post" asp-controller="Authorization" asp-action="Registration"> <!-- Метод передачи данных, контроллер для обработки данных, метод для обработки данных -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/AuthorizationStyle.css" asp-append-version="true" />
+</head>
+<body>
+    <h2>Регистрация</h2>
 
-    <label asp-for="Name"></label> <!-- Название поля -->
-    <input asp-for="Name" /> <!-- Поле для ввода данных -->
-    <span asp-validation-for="Name"></span> <!-- Поле для вывода ошибок -->
+    <form method="post" asp-controller="Authorization" asp-action="Registration">
+        <!-- Метод передачи данных, контроллер для обработки данных, метод для обработки данных -->
 
-    <label asp-for="Login"></label> <!-- Название поля -->
-    <input asp-for="Login" /> <!-- Поле для ввода данных -->
-    <span asp-validation-for="Login"></span> <!-- Поле для вывода ошибок -->
+        <label asp-for="Name"></label> <!-- Название поля -->
+        <input asp-for="Name" /> <!-- Поле для ввода данных -->
+        <span asp-validation-for="Name"></span> <!-- Поле для вывода ошибок -->
 
-    <label asp-for="Password"></label> <!-- Название поля -->
-    <input asp-for="Password" /> <!-- Поле для ввода данных -->
-    <span asp-validation-for="Password"></span> <!-- Поле для вывода ошибок -->
+        <label asp-for="Login"></label> <!-- Название поля -->
+        <input asp-for="Login" /> <!-- Поле для ввода данных -->
+        <span asp-validation-for="Login"></span> <!-- Поле для вывода ошибок -->
 
-    <label asp-for="Email"></label> <!-- Название поля -->
-    <input asp-for="Email" /> <!-- `Поле для ввода данных -->
-    <span asp-validation-for="Email"></span> <!-- Поле для вывода ошибок -->
+        <label asp-for="Password"></label> <!-- Название поля -->
+        <input asp-for="Password" /> <!-- Поле для ввода данных -->
+        <span asp-validation-for="Password"></span> <!-- Поле для вывода ошибок -->
 
-    <label asp-for="Locality"></label> <!-- Название поля -->
-    <input asp-for="Locality" /> <!-- Поле для ввода данных -->
-    <span asp-validation-for="Locality"></span> <!-- Поле для вывода ошибок -->
+        <label asp-for="Email"></label> <!-- Название поля -->
+        <input asp-for="Email" /> <!-- `Поле для ввода данных -->
+        <span asp-validation-for="Email"></span> <!-- Поле для вывода ошибок -->
 
-    <label asp-for="StreetName"></label> <!-- Название поля -->
-    <input asp-for="StreetName" /> <!-- Поле для ввода данных -->
-    <span asp-validation-for="StreetName"></span> <!-- Поле для вывода ошибок -->
+        <label asp-for="Locality"></label> <!-- Название поля -->
+        <input asp-for="Locality" /> <!-- Поле для ввода данных -->
+        <span asp-validation-for="Locality"></span> <!-- Поле для вывода ошибок -->
 
-    <label asp-for="HouseNumber"></label> <!-- Название поля -->
-    <input asp-for="HouseNumber" /> <!-- Поле для ввода данных -->
-    <span asp-validation-for="HouseNumber"></span> <!-- Поле для вывода ошибок -->
+        <label asp-for="StreetName"></label> <!-- Название поля -->
+        <input asp-for="StreetName" /> <!-- Поле для ввода данных -->
+        <span asp-validation-for="StreetName"></span> <!-- Поле для вывода ошибок -->
 
-    <label asp-for="ApartmentNumber"></label> <!-- Название поля -->
-    <input asp-for="ApartmentNumber" /> <!-- Поле для ввода данных -->
-    <span asp-validation-for="ApartmentNumber"></span> <!-- Поле для вывода ошибок -->
+        <label asp-for="HouseNumber"></label> <!-- Название поля -->
+        <input asp-for="HouseNumber" /> <!-- Поле для ввода данных -->
+        <span asp-validation-for="HouseNumber"></span> <!-- Поле для вывода ошибок -->
 
-    <input type="submit" value="Зарегистрироваться"/>
-    <span>@ViewData["Message"]</span> <!-- Поле для вывода ошибок -->
-</form> 
-
-<a asp-controller="Authorization" asp-action="Index">Отмена</a>
+        <label asp-for="ApartmentNumber"></label> <!-- Название поля -->
+        <input asp-for="ApartmentNumber" /> <!-- Поле для ввода данных -->
+        <span asp-validation-for="ApartmentNumber"></span> <!-- Поле для вывода ошибок -->
+        <button>Зарегистрироваться</button>
+        <span>@ViewData["Message"]</span> <!-- Поле для вывода ошибок -->
+    </form>
+        <a asp-controller="Authorization" asp-action="Index" type="submit">Отмена</a>
+</body>
+</html>
