@@ -20,6 +20,8 @@ namespace Pool_system.Models
 
         public bool TryLogInUser(string login, string password)
         {
+            bool state = false;
+
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
@@ -39,19 +41,23 @@ namespace Pool_system.Models
                          & (password == reader.GetString("Password"))
                           )
                         {
-                            return true;
+                            //conn.Close();
+                            state = true;
                         }
 
                     }
                 }
 
             }
+            
 
-            return false;
+            return state;
         }
 
         public bool TryRegistrationUser(string login, string password)
         {
+            bool state = false;
+
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
@@ -76,12 +82,21 @@ namespace Pool_system.Models
                     insertCmd.Parameters.Add(loginParam);
                     insertCmd.Parameters.Add(passswordParam);
 
-                    if (insertCmd.ExecuteNonQuery() != 1) 
+                    if (insertCmd.ExecuteNonQuery() == 1) 
                     { 
-                        return false;
+                        //conn.Close();
+                        state =  true;
                     }   
                 }
             }
+
+            return state;
+        }
+
+        public bool TryLogInUserBySessionID(string sessionValue)
+        {
+
+
 
             return false;
         }
