@@ -4,10 +4,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-//test
-builder.Services.AddSwaggerGen();
-//test
 builder.Services.Add(new ServiceDescriptor(typeof(UserContext), new UserContext(builder.Configuration.GetConnectionString("DefaultConnection"))));
+
+builder.Services.AddDistributedMemoryCache();// добавляем IDistributedMemoryCache
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".MyApp.Session";
+    options.IdleTimeout = TimeSpan.FromSeconds(3600);//час бездействия
+    options.Cookie.IsEssential = true;//куки критичны и необходимы для работы этого приложения
+});
+
+builder.Services.AddSession();  // добавляем сервисы сессии
 
 var app = builder.Build();
 
@@ -16,17 +24,13 @@ if (!app.Environment.IsDevelopment()){
 
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-    //test
-    app.UseSwagger();
-    app.UseSwaggerUI( 
-        
-        );
-    //test
+    app.UseHsts();    
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSession();   // добавляем middleware для работы с сессиями
 
 app.UseRouting();
 

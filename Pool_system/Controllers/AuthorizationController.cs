@@ -2,6 +2,8 @@
 using Pool_system.Models;
 using System.Net;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
+
 
 namespace Pool_system.Controllers
 {
@@ -31,13 +33,25 @@ namespace Pool_system.Controllers
         {
             try
             {
+                if (HttpContext.Session.Keys.Contains("IdSession"))
+                {
+                    //TODO: необходимо извелкать из базы логин, пароль по ID_Session и авторизовать user-а
+
+                }
+                else
+                {
+                    HttpContext.Session.SetString("IdSession","1");//устанавливаем Id сессии (IdSession, 12)
+                }
+
                 UserContext context = (UserContext)HttpContext.RequestServices.GetService(typeof(UserContext));
                 if (context.TryLogInUser(data.Login, data.Password))
                 {
+                    
+
                     return View("PoolList");//авторизован успешно
                 }
                 else
-                    @ViewData["Message"] = "Пользователь не найден";
+                    @ViewData["Message"] = "Пользователь не найден";                    
                     return View("Index");//пользователь не найден.
             }
             catch (Exception ex)
