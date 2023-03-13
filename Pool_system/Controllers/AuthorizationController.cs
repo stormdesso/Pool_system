@@ -118,7 +118,7 @@ namespace Pool_system.Controllers
         }
 
         [HttpPost]
-        [Route("restorePassword")] //добавляет к пути registration
+        [Route("restorePassword")] //добавляет к пути restorePassword
         public IActionResult RestorePassword(RestorePasswordModel data) //Контроллер обработки запроса на восстановление пароля
         {
             if (true)
