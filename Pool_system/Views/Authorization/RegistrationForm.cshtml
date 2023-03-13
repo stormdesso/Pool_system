@@ -10,7 +10,6 @@
 </head>
 <body>
     <h2>Регистрация</h2>
-
     <form method="post" asp-controller="Authorization" asp-action="Registration"> <!-- Метод передачи данных, контроллер для обработки данных, метод для обработки данных -->
 
         <label asp-for="Name"></label> <!-- Название поля -->
@@ -22,11 +21,13 @@
         <span asp-validation-for="Login"></span>
 
         <label asp-for="Password"></label>
-        <input asp-for="Password" type="password"/>
+        <input class="js-registration-password-input" asp-for="Password" type="password" />
+        <button class="js-btn-registration-password" type="button">Показать пароль</button>
         <span asp-validation-for="Password"></span>
 
         <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" type="password" />
+        <input asp-for="ConfirmPassword" type="password" class="js-registration-confirm-password-input" />
+        <button class="js-registration-confirm-btn-password" type="button">Показать пароль</button>
         <span asp-validation-for="ConfirmPassword"></span>
 
         <label asp-for="Email"></label>
@@ -52,7 +53,8 @@
         <button>Зарегистрироваться</button>
         <span>@ViewData["Message"]</span> <!-- Поле для вывода ошибок -->
     </form>
-
     <a asp-controller="Authorization" asp-action="Index" type="submit">Отмена</a>
+<script src="js/ShowRegistrationPassword.js"></script>
+<script src="js/ShowRegistrationConfirmPassword.js"></script>
 </body>
 </html>
