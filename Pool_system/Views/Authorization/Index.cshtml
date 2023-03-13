@@ -18,7 +18,8 @@
         </div>
         <div class="passwordBlock dataForm">
             <label asp-for="Password"></label> <!-- Название поля -->
-            <input asp-for="Password" /> <!-- Поле для ввода данных -->
+            <input class="js-password-input" asp-for="Password" type="password"/> <!-- Поле для ввода данных -->
+            <button class ="js-btn-password" type="button">Показать пароль</button>
             <span asp-validation-for="Password"></span> <!-- Поле для вывода ошибок -->
 
         </div>
@@ -26,7 +27,8 @@
         <span>@ViewData["Message"]</span> <!-- Поле для вывода ошибок -->
     </form>
     <a asp-controller="Authorization" asp-action="RegistrationForm">Зарегистрироваться</a>
-    <a asp-controller="Authorization" asp-action="RestorePasswordForm">Восстановить пароль</a>
+<a asp-controller="Authorization" asp-action="RestorePasswordForm">Восстановить пароль</a>
 
+<script src="js/ShowPassword.js"></script>
 </body>
 </html>
