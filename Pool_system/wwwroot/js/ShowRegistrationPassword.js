@@ -1,13 +1,19 @@
-let btnRegistrationPass = document.querySelector('.js-btn-registration-password'),
-    inputRegistrationPass = document.querySelector('.js-registration-password-input');
+let btnPass = document.querySelector('.js-btn-password')
 
-btnRegistrationPass.onclick = function ()
-{
-    if (inputRegistrationPass.getAttribute('type') == 'password') {
-        inputRegistrationPass.setAttribute('type', 'text');
+btnPass.forEach(function (btn) {
+    btn.onclick = function () {
+        let target = this.getAttribute('data-target'),
+            inputPass = document.querySelector(target);
+
+        if (inputPass.getAttribute('type') == 'password') {
+            btn.classList.add('active');
+            inputPass.setAttribute('type', 'text');
+        }
+        else {
+            btn.classList.remove('active');
+            inputPass.setAttribute('type', 'password');
+        }
+
     }
-    else
-    {
-        inputRegistrationPass.setAttribute('type', 'password');
-    }
-}
+});
+

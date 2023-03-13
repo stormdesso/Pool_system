@@ -19,7 +19,9 @@
         <div class="passwordBlock dataForm">
             <label asp-for="Password"></label> <!-- Название поля -->
             <input class="js-password-input" asp-for="Password" type="password"/> <!-- Поле для ввода данных -->
-            <button class ="js-btn-password" type="button">Показать пароль</button>
+            <button class ="js-btn-password" type="button">
+                <img src="icon/eye.svg" class="eye-icon"/>
+            </button>
             <span asp-validation-for="Password"></span> <!-- Поле для вывода ошибок -->
 
         </div>
