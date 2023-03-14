@@ -23,14 +23,14 @@
 
         <label asp-for="Password"></label>
         <input id="js-first-password" asp-for="Password" type="password" />
-        <button class="js-btn-password1" type="button">
+        <button class="js-btn-password1 js-btn-password" type="button">
             <img src="~/icon/eye.svg" class="eye-icon" />
         </button>
         <span asp-validation-for="Password"></span>
 
         <label asp-for="ConfirmPassword"></label>
         <input id="js-second-password" asp-for="ConfirmPassword" type="password" />
-        <button class="js-btn-password2" type="button">
+        <button class="js-btn-password2 js-btn-password" type="button">
             <img src="~/icon/eye.svg" class="eye-icon" />
         </button>
         <span asp-validation-for="ConfirmPassword"></span>
