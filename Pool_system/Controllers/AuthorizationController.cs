@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Linq;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace Pool_system.Controllers
 {
@@ -18,15 +20,18 @@ namespace Pool_system.Controllers
 
         private readonly JWTSettings _options;
 
-        public AuthorizationController(IOptions<JWTSettings> optAccess)
+        public AuthorizationController(IOptions<JWTSettings> optAccess)//получаем параметры из appsettings
         {
             _options = optAccess.Value;
         }
-        
+
+        ///<summary> 
+        ///Метод используется при первичном входе пользователя в систему(получает токен)
+        ///</summary>
         private string GetToken(string login, string password)
         {
-            List<Claim> claims = new List<Claim>() { 
-            new Claim(ClaimTypes.Name, login),
+            List<Claim> claims = new List<Claim>() { //содержимое токена
+            new Claim("Login", login),
             new Claim("Password", password),
             };
 
@@ -36,7 +41,7 @@ namespace Pool_system.Controllers
                 issuer: _options.Issuer,
                 audience: _options.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(60)),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(60)),//время жизни токена
                 notBefore: DateTime.UtcNow,
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                 );
@@ -67,24 +72,31 @@ namespace Pool_system.Controllers
 
         [HttpPost]
         [Route("authorization")] //добавляет к пути authorization         
-        public IActionResult CheckData(AuthorizationModel data) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
+        public IActionResult CheckData(AuthorizationModel userData) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
             try
-            {                
+            {
+                              
+
                 UserContext context = (UserContext)HttpContext.RequestServices.GetService(typeof(UserContext));
-                if (context.TryLogInUser(data.Login, data.Password))
+                if (context.TryLogInUser(userData.Login, userData.Password))
                 {
                     //TODO: создать токен и дать user-у в БД
                     /* пока не робит токен null идёт
                     string token = GetToken(data.Login, data.Password);
                     context.PutTokenInDb(token, data);
                     */
+                    string token = GetToken(userData.Login, userData.Password);//получаем токен
+                    HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен
+                    var date = DateTime.Now.ToString("HH:mm:ss tt");
+
+                    //TODO: добавить токен в базу
 
                     return View("PoolList");//авторизован успешно
                 }
                 else
                     @ViewData["Message"] = "Пользователь не найден";                    
-                    return View("Index");//пользователь не найден.
+                    return View("Index");
             }
             catch (Exception ex)
             {
