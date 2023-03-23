@@ -6,14 +6,14 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSection"));
+builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));//сопоставляем блок JWT-settgings из конфиг с моделью
 
 var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
 var issuer = builder.Configuration.GetSection("JWTSettings:Issuer").Value;
 var audience = builder.Configuration.GetSection("JWTSettings:Audience").Value;
 var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(options =>//устанавливаем аутентификацию с помощью токенов
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -21,7 +21,7 @@ builder.Services.AddAuthentication(options =>
 }
 ).AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.TokenValidationParameters = new TokenValidationParameters//задаём параметры валидации токена
     {
         ValidateIssuer = true,
         ValidIssuer = issuer,
