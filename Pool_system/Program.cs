@@ -38,7 +38,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.Add(new ServiceDescriptor(typeof(UserContext), new UserContext(builder.Configuration.GetConnectionString("DefaultConnection"))));
+builder.Services.Add(new ServiceDescriptor(typeof(UsersContext), new UsersContext(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
 builder.Services.AddDistributedMemoryCache();// добавляем IDistributedMemoryCache
 
