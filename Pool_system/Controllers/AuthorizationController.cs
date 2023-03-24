@@ -28,7 +28,7 @@ namespace Pool_system.Controllers
         ///<summary> 
         ///Метод используется при первичном входе пользователя в систему(получает токен)
         ///</summary>
-        private string GetToken(string login, string password)
+        public string GetToken(string login, string password)
         {
             List<Claim> claims = new List<Claim>() { //содержимое токена
             new Claim("Login", login),
@@ -45,7 +45,7 @@ namespace Pool_system.Controllers
                 notBefore: DateTime.UtcNow,
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                 );
-
+                       //JWT.VALIDTO() ВРЕМЯ жизни токена
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
@@ -75,22 +75,13 @@ namespace Pool_system.Controllers
         public IActionResult CheckData(AuthorizationModel userData) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
             try
-            {
-                              
-
-                UserContext context = (UserContext)HttpContext.RequestServices.GetService(typeof(UserContext));
+            {                              
+                UsersContext context = (UsersContext)HttpContext.RequestServices.GetService(typeof(UsersContext));
                 if (context.TryLogInUser(userData.Login, userData.Password))
-                {
-                    //TODO: создать токен и дать user-у в БД
-                    /* пока не робит токен null идёт
-                    string token = GetToken(data.Login, data.Password);
-                    context.PutTokenInDb(token, data);
-                    */
+                {                   
                     string token = GetToken(userData.Login, userData.Password);//получаем токен
-                    HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен
-                    var date = DateTime.Now.ToString("HH:mm:ss tt");
-
-                    //TODO: добавить токен в базу
+                    context.PutTokenInDb(token, userData);
+                    HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                    
 
                     return View("PoolList");//авторизован успешно
                 }
@@ -106,15 +97,17 @@ namespace Pool_system.Controllers
 
         [HttpPost]
         [Route("registration")] //добавляет к пути registration  
-        public IActionResult Registration(RegistrationModel data) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
+        public IActionResult Registration(RegistrationModel userData) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
             try
-            {
-                UserContext context = (UserContext)HttpContext.RequestServices.GetService(typeof(UserContext));//получаем подключение к базе
-                if (context.TryRegistrationUser(data.Login, data.Password))
+            {   
+                UsersContext context = (UsersContext)HttpContext.RequestServices.GetService(typeof(UsersContext));//получаем подключение к базе
+                if (context.TryRegistrationUser(userData.Login, userData.Password, GetToken(userData.Login, userData.Password)))
                 {
+                    string token = GetToken(userData.Login, userData.Password);//получаем токен
+                    context.PutTokenInDb(token, userData);
+                    HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен   
                     //TODO: создать токен и дать user-у в БД
-
 
                     return View("PoolList");//зарегистрирован успешно
                 }

@@ -3,11 +3,11 @@ using System.Data;
 
 namespace Pool_system.Models.Classes
 {
-    public class UserContext
+    public class UsersContext
     {
         public string ConnectionString { get; set; }
 
-        public UserContext(string connectionString)
+        public UsersContext(string connectionString)
         {
             ConnectionString = connectionString;
         }
@@ -54,7 +54,7 @@ namespace Pool_system.Models.Classes
             return state;
         }
 
-        public bool TryRegistrationUser(string login, string password)
+        public bool TryRegistrationUser(string login, string password, string token)
         {
             bool state = false;
 
@@ -63,32 +63,16 @@ namespace Pool_system.Models.Classes
                 conn.Open();
                 MySqlParameter loginParam = new MySqlParameter("@login", login);
                 MySqlParameter passswordParam = new MySqlParameter("@password", password);
-                MySqlCommand getRecordCmd = new MySqlCommand(
-                    "SELECT count(*) FROM users\r\n\t" +
-                    "WHERE (users.Login = @login);"
+                MySqlParameter tokenParam = new MySqlParameter("@token", token);
+                MySqlCommand insertRecordCmd = new MySqlCommand(
+                    "INSERT INTO users (Login, Password, Token) VALUES (@login, @password, @token);"
                 , conn);
 
-                getRecordCmd.Parameters.Add(loginParam);
-
-                //тут ошибка 
-                int numberOfRecords = 0;
-                using (MySqlDataReader reader = getRecordCmd.ExecuteReader())
-                {
-                    numberOfRecords = reader.GetInt16("COUNT(*)");
-                }
-
-                if (numberOfRecords == 0)
-                {
-                    var insertCmd = new MySqlCommand("INSERT INTO users (Login, Password) VALUES ();");
-                    insertCmd.Parameters.Add(loginParam);
-                    insertCmd.Parameters.Add(passswordParam);
-
-                    if (insertCmd.ExecuteNonQuery() == 1)
-                    {
-                        //conn.Close();
-                        state = true;
-                    }
-                }
+                insertRecordCmd.Parameters.Add(loginParam);
+                insertRecordCmd.Parameters.Add(passswordParam);
+                insertRecordCmd.Parameters.Add(tokenParam);
+                insertRecordCmd.ExecuteNonQuery(); 
+                state = true;
             }
 
             return state;
@@ -111,6 +95,31 @@ namespace Pool_system.Models.Classes
                 , conn);
 
                 putTokenCmd.Parameters.Add(loginParam);
+                putTokenCmd.Parameters.Add(passswordParam);
+                putTokenCmd.Parameters.Add(tokenParam);
+                putTokenCmd.ExecuteNonQuery();                
+            }
+        }
+        
+        public void PutTokenInDb(string token, RegistrationModel model)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                MySqlParameter loginParam = new MySqlParameter("@login", model.Login);
+                MySqlParameter passswordParam = new MySqlParameter("@password", model.Password);
+                MySqlParameter tokenParam = new MySqlParameter("@token", token);
+
+                MySqlCommand putTokenCmd = new MySqlCommand(
+                    "UPDATE\r\n    users\r\nSET\r\n    " +
+                    "Token = @token\r\n" +
+                    "WHERE\r\n    " +
+                    "(Login = @login and Password = @password);"
+                , conn);
+
+                putTokenCmd.Parameters.Add(loginParam);
+                putTokenCmd.Parameters.Add(passswordParam);
+                putTokenCmd.Parameters.Add(tokenParam);
                 putTokenCmd.ExecuteNonQuery();                
             }
         }
