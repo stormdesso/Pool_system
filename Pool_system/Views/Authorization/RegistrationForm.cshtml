@@ -1,0 +1,64 @@
+﻿@model RegistrationModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/AuthorizationStyle.css" asp-append-version="true" />
+</head>
+<body>
+    <h2>Регистрация</h2>
+    
+    <form method="post" asp-controller="Authorization" asp-action="Registration"> <!-- Метод передачи данных, контроллер для обработки данных, метод для обработки данных -->
+
+        <label asp-for="Name"></label> <!-- Название поля -->
+        <input asp-for="Name" /> <!-- Поле для ввода данных -->
+        <span asp-validation-for="Name"></span> <!-- Поле для вывода ошибок -->
+
+        <label asp-for="Login"></label>
+        <input asp-for="Login" />
+        <span asp-validation-for="Login"></span>
+
+        <label asp-for="Password"></label>
+        <input id="js-first-password" asp-for="Password" type="password" />
+        <button class="js-btn-password1 js-btn-password" type="button">
+            <img src="~/icon/eye.svg" class="eye-icon" />
+        </button>
+        <span asp-validation-for="Password"></span>
+
+        <label asp-for="ConfirmPassword"></label>
+        <input id="js-second-password" asp-for="ConfirmPassword" type="password" />
+        <button class="js-btn-password2 js-btn-password" type="button">
+            <img src="~/icon/eye.svg" class="eye-icon" />
+        </button>
+        <span asp-validation-for="ConfirmPassword"></span>
+
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+
+        <label asp-for="Locality"></label>
+        <input asp-for="Locality" />
+        <span asp-validation-for="Locality"></span>
+
+        <label asp-for="StreetName"></label>
+        <input asp-for="StreetName" />
+        <span asp-validation-for="StreetName"></span>
+
+        <label asp-for="HouseNumber"></label>
+        <input asp-for="HouseNumber" />
+        <span asp-validation-for="HouseNumber"></span>
+
+        <label asp-for="ApartmentNumber"></label>
+        <input asp-for="ApartmentNumber" />
+        <span asp-validation-for="ApartmentNumber"></span>
+
+        <button>Зарегистрироваться</button>
+        <span>@ViewData["Message"]</span> <!-- Поле для вывода ошибок -->
+    </form>
+    <a asp-controller="Authorization" asp-action="Index" type="submit">Отмена</a>
+    <script src="~/js/ShowRegistrationPassword.js"> </script>
+</body>
+</html>

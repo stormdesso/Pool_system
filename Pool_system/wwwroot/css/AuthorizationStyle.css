@@ -1,0 +1,31 @@
+﻿label
+{
+    display: block;
+}
+
+span
+{
+    display: block;
+    color: red;
+    font-size: small;
+}
+
+.js-btn-password 
+{
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: .1;
+}
+
+.js-btn-password.active {
+    opacity: .5;
+    color: black;
+}
+
+.eye-icon
+{
+    width: 21px;
+    height: 21px;
+}
