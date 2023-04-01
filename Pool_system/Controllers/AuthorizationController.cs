@@ -16,8 +16,9 @@ using Org.BouncyCastle.Asn1.X509;
 namespace Pool_system.Controllers
 {
     public class AuthorizationController : Controller
-    {       
-        public JWTSettings _options { get;}
+    {
+
+        private readonly JWTSettings _options;
 
         public AuthorizationController(IOptions<JWTSettings> optAccess)//получаем параметры из appsettings
         {
@@ -51,7 +52,9 @@ namespace Pool_system.Controllers
 
         [HttpGet]
         public IActionResult Index() //При запуске этого контроллера, выводит html с именем index из папки Authorization (Из-за схожести названия контроллера и папки)
-        {            
+        {
+            
+
             return View();
         }
 
@@ -79,8 +82,8 @@ namespace Pool_system.Controllers
                     string token = GetToken(userData.Login, userData.Password);//получаем токен
                     context.PutTokenInDb(token, userData);
                     HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                    
-                    return Redirect("/PollsList");
-                    //return View("PoolList");//авторизован успешно - так делать неправильно, т.к не вызывается контроллер при переходе на страницу и по факту к его методам нельзя обратиться
+
+                    return View("PoolList");//авторизован успешно
                 }
                 else
                     @ViewData["Message"] = "Пользователь не найден";                    
@@ -103,10 +106,10 @@ namespace Pool_system.Controllers
                 {
                     string token = GetToken(userData.Login, userData.Password);//получаем токен
                     context.PutTokenInDb(token, userData);
-                    HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                                                                           
+                    HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен   
+                    //TODO: создать токен и дать user-у в БД
 
-                    return Redirect("/PollsList");
-                    //return View("PoolList");//зарегистрирован успешно
+                    return View("PoolList");//зарегистрирован успешно
                 }
                 else
                     @ViewData["Message"] = "Пользователь с таким ФИО уже зарегистрирован"; //Поле для вывода ошибок
