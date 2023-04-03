@@ -16,8 +16,9 @@ namespace Pool_system.Controllers
         }
         private List<Poll> PollsList { get; }
 
-        public IActionResult Index()
-        {            
+        public IActionResult Index() //Страница с опросами
+        {   
+            
             //TODO: при загрузке страницы необходимо подгружать опросы
             //вызывая метод GetListOfPolls и возвращая его во View
 
@@ -26,12 +27,27 @@ namespace Pool_system.Controllers
             return View();
         }
 
+        public IActionResult AddPool()
+        {
+            return View();
+        }
+
+        public IActionResult UsersList()
+        {
+            return View();
+        }
+
+        public IActionResult Help()
+        {
+            return View();
+        }
+
         [HttpGet]        
         public IActionResult GetListOfPolls() //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
             var token = HttpContext.Request.Cookies.FirstOrDefault(x => x.Key == "Token");//получаем из куки user-а токен                    
-                
-            
+            //При нажатии на кнопку "Выйти" необходимо отключать токен    
+
             return View("Index");
         }
 
