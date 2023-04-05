@@ -58,6 +58,32 @@ namespace Pool_system.Models.Classes
         {
             bool state = false;
 
+            //using (MySqlConnection conn = GetConnection())
+            //{
+            //    conn.Open();
+            //    MySqlParameter param = new MySqlParameter("@login", login);
+            //    MySqlCommand cmd = new MySqlCommand(
+            //        "SELECT * FROM users\r\n\t" +
+            //        "WHERE (users.Login = @login);"
+            //    , conn);
+
+            //    cmd.Parameters.Add(param);
+
+            //    using (MySqlDataReader reader = cmd.ExecuteReader())
+            //    {
+            //        while (reader.Read())
+            //        {
+            //            if (login == reader.GetString("Login")                        
+            //            {
+            //                state = false;
+            //            }
+
+            //        }
+            //    }
+
+            //}
+
+
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
@@ -71,15 +97,26 @@ namespace Pool_system.Models.Classes
                 insertRecordCmd.Parameters.Add(loginParam);
                 insertRecordCmd.Parameters.Add(passswordParam);
                 insertRecordCmd.Parameters.Add(tokenParam);
-                insertRecordCmd.ExecuteNonQuery(); 
+                try
+                {
+                    insertRecordCmd.ExecuteNonQuery();
+                }
+                catch (MySqlException ex)
+                {
+                    int errorcode = ex.Number;                    
+                    return false;
+                }
+                
                 state = true;
             }
 
             return state;
         }
 
-        public void PutTokenInDb(string token, AuthorizationModel model)
+        public bool TryPutTokenInDb(string token, AuthorizationModel model)
         {
+            bool state = false;
+
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
@@ -97,12 +134,24 @@ namespace Pool_system.Models.Classes
                 putTokenCmd.Parameters.Add(loginParam);
                 putTokenCmd.Parameters.Add(passswordParam);
                 putTokenCmd.Parameters.Add(tokenParam);
-                putTokenCmd.ExecuteNonQuery();                
+                try
+                {
+                    putTokenCmd.ExecuteNonQuery();
+                    state = true;
+                }
+                catch (MySqlException ex)
+                {
+                    int errorcode = ex.Number;
+                    state= false;
+                }
             }
+            return state;
         }
         
-        public void PutTokenInDb(string token, RegistrationModel model)
+        public bool TryPutTokenInDb(string token, RegistrationModel model)
         {
+            bool state = false;
+
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
@@ -120,8 +169,18 @@ namespace Pool_system.Models.Classes
                 putTokenCmd.Parameters.Add(loginParam);
                 putTokenCmd.Parameters.Add(passswordParam);
                 putTokenCmd.Parameters.Add(tokenParam);
-                putTokenCmd.ExecuteNonQuery();                
+                try
+                {
+                    putTokenCmd.ExecuteNonQuery();
+                    state = true;
+                }
+                catch (MySqlException ex)
+                {
+                    int errorcode = ex.Number;
+                    state = false;
+                }                           
             }
+            return state;
         }
 
         /*

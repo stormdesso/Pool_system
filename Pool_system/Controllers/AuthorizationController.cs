@@ -77,9 +77,16 @@ namespace Pool_system.Controllers
                 if (context.TryLogInUser(userData.Login, userData.Password))
                 {                   
                     string token = GetToken(userData.Login, userData.Password);//получаем токен
-                    context.PutTokenInDb(token, userData);
-                    HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                    
-                    return Redirect("/PollsList");
+                    if(context.TryPutTokenInDb(token, userData))
+                    {
+                        HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                    
+                        return Redirect("/PollsList");
+                    }
+                    else
+                    {
+                        return Redirect("/");
+                    }
+                    
                     //return View("PoolList");//авторизован успешно - так делать неправильно, т.к не вызывается контроллер при переходе на страницу и по факту к его методам нельзя обратиться
                 }
                 else
@@ -102,11 +109,15 @@ namespace Pool_system.Controllers
                 if (context.TryRegistrationUser(userData.Login, userData.Password, GetToken(userData.Login, userData.Password)))
                 {
                     string token = GetToken(userData.Login, userData.Password);//получаем токен
-                    context.PutTokenInDb(token, userData);
-                    HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                                                                           
-
-                    return Redirect("/PollsList");
-                    //return View("PoolList");//зарегистрирован успешно
+                    if(context.TryPutTokenInDb(token, userData))
+                    {
+                        HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                                                                           
+                        return Redirect("/PollsList");
+                    }
+                    else
+                    {
+                        return Redirect("/");
+                    }
                 }
                 else
                     @ViewData["Message"] = "Пользователь с таким ФИО уже зарегистрирован"; //Поле для вывода ошибок
