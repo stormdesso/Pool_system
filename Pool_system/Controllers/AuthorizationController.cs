@@ -120,7 +120,7 @@ namespace Pool_system.Controllers
                     }
                 }
                 else
-                    @ViewData["Message"] = "Пользователь с таким ФИО уже зарегистрирован"; //Поле для вывода ошибок
+                    @ViewData["Message"] = "Пользователь с таким Логином уже зарегистрирован"; //Поле для вывода ошибок
                     return View("RegistrationForm");//не зарегистрирован
 
             }
