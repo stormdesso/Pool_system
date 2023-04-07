@@ -71,63 +71,79 @@ namespace Pool_system.Controllers
         [Route("authorization")] //добавляет к пути authorization         
         public IActionResult CheckData(AuthorizationModel userData) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
-            try
-            {                              
-                UsersContext context = (UsersContext)HttpContext.RequestServices.GetService(typeof(UsersContext));
-                if (context.TryLogInUser(userData.Login, userData.Password))
-                {                   
-                    string token = GetToken(userData.Login, userData.Password);//получаем токен
-                    if(context.TryPutTokenInDb(token, userData))
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    UsersContext context = (UsersContext)HttpContext.RequestServices.GetService(typeof(UsersContext));
+                    if (context.TryLogInUser(userData.Login, userData.Password))
                     {
-                        HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                    
-                        return Redirect("/PollsList");
+                        string token = GetToken(userData.Login, userData.Password);//получаем токен
+                        if (context.TryPutTokenInDb(token, userData))
+                        {
+                            HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                    
+                            return Redirect("/PollsList");
+                        }
+                        else
+                        {
+                            return Redirect("/");
+                        }
+
+                        //return View("PoolList");//авторизован успешно - так делать неправильно, т.к не вызывается контроллер при переходе на страницу и по факту к его методам нельзя обратиться
                     }
                     else
-                    {
-                        return Redirect("/");
-                    }
-                    
-                    //return View("PoolList");//авторизован успешно - так делать неправильно, т.к не вызывается контроллер при переходе на страницу и по факту к его методам нельзя обратиться
-                }
-                else
-                    @ViewData["Message"] = "Пользователь не найден";                    
+                        @ViewData["Message"] = "Пользователь не найден";
                     return View("Index");
+                }
+                catch (Exception ex)
+                {
+                    return Problem("Internal error");//не смогли подключитсья к базе и т.п
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return Problem("Internal error");//не смогли подключитсья к базе и т.п
+                return View("Index");
             }
+            
         }
 
         [HttpPost]
         [Route("registration")] //добавляет к пути registration  
         public IActionResult Registration(RegistrationModel userData) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
-            try
-            {   
-                UsersContext context = (UsersContext)HttpContext.RequestServices.GetService(typeof(UsersContext));//получаем подключение к базе
-                if (context.TryRegistrationUser(userData.Login, userData.Password, GetToken(userData.Login, userData.Password)))
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    string token = GetToken(userData.Login, userData.Password);//получаем токен
-                    if(context.TryPutTokenInDb(token, userData))
+                    UsersContext context = (UsersContext)HttpContext.RequestServices.GetService(typeof(UsersContext));//получаем подключение к базе
+                    if (context.TryRegistrationUser(userData.Login, userData.Password, GetToken(userData.Login, userData.Password)))
                     {
-                        HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                                                                           
-                        return Redirect("/PollsList");
+                        string token = GetToken(userData.Login, userData.Password);//получаем токен
+                        if (context.TryPutTokenInDb(token, userData))
+                        {
+                            HttpContext.Response.Cookies.Append("Token", token);//добавляем в куки user-у токен                                                                           
+                            return Redirect("/PollsList");
+                        }
+                        else
+                        {
+                            return Redirect("/");
+                        }
                     }
                     else
-                    {
-                        return Redirect("/");
-                    }
-                }
-                else
-                    @ViewData["Message"] = "Пользователь с таким Логином уже зарегистрирован"; //Поле для вывода ошибок
+                        @ViewData["Message"] = "Пользователь с таким Логином уже зарегистрирован"; //Поле для вывода ошибок
                     return View("RegistrationForm");//не зарегистрирован
 
+                }
+                catch (Exception ex)
+                {
+                    return Problem("Internal error");//не смогли подключитсья к базе и т.п
+                }
             }
-            catch (Exception ex)
-            {
-                return Problem("Internal error");//не смогли подключитсья к базе и т.п
+            else
+            { 
+                return View("RegistrationForm"); 
             }
+            
         }
 
         [HttpPost]
