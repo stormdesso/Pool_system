@@ -71,8 +71,6 @@ namespace Pool_system.Controllers
         [Route("authorization")] //добавляет к пути authorization         
         public IActionResult CheckData(AuthorizationModel userData) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
-            if(ModelState.IsValid)
-            {
                 try
                 {
                     UsersContext context = (UsersContext)HttpContext.RequestServices.GetService(typeof(UsersContext));
@@ -99,20 +97,12 @@ namespace Pool_system.Controllers
                 {
                     return Problem("Internal error");//не смогли подключитсья к базе и т.п
                 }
-            }
-            else
-            {
-                return View("Index");
-            }
-            
         }
 
         [HttpPost]
         [Route("registration")] //добавляет к пути registration  
         public IActionResult Registration(RegistrationModel userData) //Контроллер обработки данных из формы берет поля из метода AuthorizationModel
         {
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     UsersContext context = (UsersContext)HttpContext.RequestServices.GetService(typeof(UsersContext));//получаем подключение к базе
@@ -138,11 +128,6 @@ namespace Pool_system.Controllers
                 {
                     return Problem("Internal error");//не смогли подключитсья к базе и т.п
                 }
-            }
-            else
-            { 
-                return View("RegistrationForm"); 
-            }
             
         }
 

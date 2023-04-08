@@ -29,3 +29,14 @@ span
     width: 21px;
     height: 21px;
 }
+
+.error .inputField
+{
+    border-color: red;
+}
+
+.error-label
+{
+    color: red;
+    margin-bottom: 5px;
+}
