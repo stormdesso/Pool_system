@@ -39,44 +39,6 @@ function validation(form)
 
      removeError(input)//Запускаем метод по чистке ошибок (Чтобы ошибки не копились и исчезали при их устранении)
 
-     //Проверка для поля "Пароль"
-     if (input.classList.contains('passwordField'))
-     {
-       password = input.value;
-       if (input.value.search(/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g) === -1) {
-           removeError(input)
-           createError(input, "Пароль должен содержать буквы большого и малого регистров, цифры и один из специальных символов !@#$%^&*");
-           result = false;
-       }
-
-       if (input.value.length < 8)
-       {
-         removeError(input)
-         createError(input, "Пароль должен состоять из 8-ми символов");
-         result = false;
-       }
-     }
-
-     //Проверка для поля "Подтвердите пароль"
-     if (input.classList.contains('confirmPassword'))
-     {
-       if (input.value !== password) //Находим первый введенный пароль по названию класса и проверяем равен ли он данным в поле "Подтвердите пароль"
-       {
-         removeError(input)
-         createError(input, "Пароли не совпадают!");
-         result = false;
-       }
-     }
-
-     if (input.classList.contains('emailField'))
-     {
-         if (input.value.search(/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu) === -1) {
-             removeError(input)
-             createError(input, "email должен содержать в себе @ и .");
-             result = false;
-         }
-     }
-
      //Проверка всех полей на их заполненность
      if (input.value == "") 
      {
@@ -91,13 +53,12 @@ function validation(form)
 
 
 //Находим форму отправки данных по id и закрепляемся за событием submit (отправка формы) -> при нажатии на кнопку зарегистрироваться, будет срабатывать функция
-document.getElementById("Registration-Form").addEventListener('submit', function (event)
+document.getElementById("Authorization-Form").addEventListener('submit', function (event)
 {
   
   //Передаем форму в метод валидации и проверяем что она успешно её прошла
   if (validation(this) == true)
   {
-    //alert('Форма проверена успешно')
     return false;
   }
   else

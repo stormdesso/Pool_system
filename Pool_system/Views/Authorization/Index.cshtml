@@ -9,28 +9,25 @@
 </head>
 <body>
     <h2>Авторизация</h2>
-    <form method="post" asp-controller="Authorization" asp-action="CheckData">
+    <form method="post" asp-controller="Authorization" asp-action="CheckData" id="Authorization-Form">
         <!-- Метод передачи данных, контроллер для обработки данных, метод для обработки данных -->
         <div class="loginBlock dataForm">
-            <label asp-for="Login" class="loginLabel"></label> <!-- Название поля -->
-            <input asp-for="Login" /> <!-- Поле для ввода данных -->
-            <span asp-validation-for="Login"></span> <!-- Поле для вывода ошибок -->
+            <label asp-for="Login" class="loginLabel">Логин</label> <!-- Название поля -->
+            <input asp-for="Login" class="inputField" /> <!-- Поле для ввода данных -->
         </div>
         <div class="passwordBlock dataForm">
-            <label asp-for="Password"></label> <!-- Название поля -->
-            <input class="js-password-input" asp-for="Password" type="password"/> <!-- Поле для ввода данных -->
+            <label asp-for="Password">Пароль</label> <!-- Название поля -->
+            <input class="js-password-input inputField" asp-for="Password" type="password" /> <!-- Поле для ввода данных -->
             <button class ="js-btn-password" type="button">
                 <img src="icon/eye.svg" class="eye-icon"/>
             </button>
-            <span asp-validation-for="Password"></span> <!-- Поле для вывода ошибок -->
-
         </div>
         <button>Войти</button>
         <span>@ViewData["Message"]</span> <!-- Поле для вывода ошибок -->
     </form>
     <a asp-controller="Authorization" asp-action="RegistrationForm">Зарегистрироваться</a>
     <a asp-controller="Authorization" asp-action="RestorePasswordForm">Восстановить пароль</a>
-
+<script src="~/js/ValidationAuthorizationForm.js"></script>
 <script src="js/ShowPassword.js"></script>
 </body>
 </html>
