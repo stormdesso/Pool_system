@@ -77,14 +77,16 @@ function validation(form)
 //Находим форму отправки данных по id и закрепляемся за событием submit (отправка формы) -> при нажатии на кнопку зарегистрироваться, будет срабатывать функция
 document.getElementById("Registration-Form").addEventListener('submit', function (event)
 {
-  event.preventDefault(); //Прерывает отправку формы
+  
   //Передаем форму в метод валидации и проверяем что она успешно её прошла
   if (validation(this) == true)
   {
     alert('Форма проверена успешно')
+    return false;
   }
   else
   {
     alert('В форме есть ошибки')
+    event.preventDefault(); //Прерывает отправку формы
   }
 })
