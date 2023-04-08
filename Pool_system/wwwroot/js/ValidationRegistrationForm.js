@@ -81,12 +81,12 @@ document.getElementById("Registration-Form").addEventListener('submit', function
   //Передаем форму в метод валидации и проверяем что она успешно её прошла
   if (validation(this) == true)
   {
-    alert('Форма проверена успешно')
+    //alert('Форма проверена успешно')
     return false;
   }
   else
   {
-    alert('В форме есть ошибки')
+    //alert('В форме есть ошибки')
     event.preventDefault(); //Прерывает отправку формы
   }
 })
